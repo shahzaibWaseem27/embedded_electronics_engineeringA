@@ -87,7 +87,7 @@ function draw() {
 const handleCreatingNewCar = () => {
   
   
-  let newCar = new Car(random(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']), CAR_RADIUS, newCarMovingDirectionInput.selected(), parseInt(newCarAcceleration.value()), newCarMergingDirection.selected());
+  let newCar = new Car(String.fromCharCode(random(97, 123)), CAR_RADIUS, newCarMovingDirectionInput.selected(), parseInt(newCarAcceleration.value()), newCarMergingDirection.selected());
   
   newCar.initSpawnPosition();
     

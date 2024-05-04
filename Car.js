@@ -8,31 +8,32 @@ class Car {
     this.acceleration = acceleration;
     this.movingDirectionAxis = movingDirectionAxis;
     this.targetMergingDirection = targetMergingDirection;
+    this.intersectionAreaFactor = 100;
     this.intersectionAreaDetails = [
   
   
               {
 
                 directionAxis: '+y',
-                axisPoint: (CANVAS_HEIGHT/2) - intersectionAreaFactor
+                axisPoint: (CANVAS_HEIGHT/2) - this.intersectionAreaDetails
 
               },
               {
 
                 directionAxis: '-x',
-                axisPoint: (CANVAS_WIDTH/2) + intersectionAreaFactor
+                axisPoint: (CANVAS_WIDTH/2) + this.intersectionAreaDetails
 
               },
               {
 
                 directionAxis: '-y',
-                axisPoint: (CANVAS_HEIGHT/2) + intersectionAreaFactor
+                axisPoint: (CANVAS_HEIGHT/2) + this.intersectionAreaDetails
 
               },
               {
 
                 directionAxis: '+x',
-                axisPoint: (CANVAS_WIDTH/2) - intersectionAreaFactor
+                axisPoint: (CANVAS_WIDTH/2) - this.intersectionAreaDetails
 
               }
 
@@ -280,9 +281,9 @@ class Car {
 
     }
     
-    if(this.origin_x_Coord === this.mergingMatrix[thisRow][thisCol].x){
+    if(Math.abs(this.origin_x_Coord - this.mergingMatrix[thisRow][thisCol].x) < 2){
       
-      if(this.origin_y_Coord === this.mergingMatrix[thisRow][thisCol].y){
+      if(Math.abs(this.origin_y_Coord - this.mergingMatrix[thisRow][thisCol].y) < 2){
         
         return true;
         

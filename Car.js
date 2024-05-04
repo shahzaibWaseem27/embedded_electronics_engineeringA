@@ -1,14 +1,43 @@
 class Car {
   
-  constructor(name, CANVAS_WIDTH, CANVAS_HEIGHT, ROAD_WIDTH, origin_x_Coord, origin_y_Coord, r, movingDirectionAxis, targetMergingDirection){
+  constructor(name, r, movingDirectionAxis, acceleration, targetMergingDirection){
     this.name = name;
-    this.origin_x_Coord = origin_x_Coord;
-    this.origin_y_Coord = origin_y_Coord;
-    this.insideIntersectionArea = false;
+    this.origin_x_Coord = 0;
+    this.origin_y_Coord = 0;
     this.r = r;
-    this.acceleration = random(0, 1);
+    this.acceleration = acceleration;
     this.movingDirectionAxis = movingDirectionAxis;
     this.targetMergingDirection = targetMergingDirection;
+    this.intersectionAreaDetails = [
+  
+  
+              {
+
+                directionAxis: '+y',
+                axisPoint: (CANVAS_HEIGHT/2) - intersectionAreaFactor
+
+              },
+              {
+
+                directionAxis: '-x',
+                axisPoint: (CANVAS_WIDTH/2) + intersectionAreaFactor
+
+              },
+              {
+
+                directionAxis: '-y',
+                axisPoint: (CANVAS_HEIGHT/2) + intersectionAreaFactor
+
+              },
+              {
+
+                directionAxis: '+x',
+                axisPoint: (CANVAS_WIDTH/2) - intersectionAreaFactor
+
+              }
+
+
+    ];
     this.mergingMatrix = [
     
     [
@@ -89,6 +118,90 @@ class Car {
     textSize(20)
     
     text(this.name, this.origin_x_Coord-0.15*this.r, this.origin_y_Coord+0.15*this.r);
+    
+  }
+  
+  stop(){
+    
+    this.acceleration = 0;
+    
+  }
+  
+  initSpawnPosition(){
+    
+      let carSpawnPosition = {};
+  
+      let cars_possible_startingPositions = [
+
+
+        {
+          movingDirectionAxis: '+y',
+          x: (CANVAS_WIDTH/2) - 0.25*ROAD_WIDTH,
+          y: 0
+        },
+        {
+          movingDirectionAxis: '-x',
+          x: CANVAS_WIDTH,
+          y: (CANVAS_HEIGHT/2) - 0.25*ROAD_WIDTH
+        },
+        {
+          movingDirectionAxis: '-y',
+          x:(CANVAS_WIDTH/2) + 0.25*ROAD_WIDTH,
+          y: CANVAS_HEIGHT
+        },
+        {
+          movingDirectionAxis: '+x',
+          x: 0,
+          y: (CANVAS_HEIGHT/2) + 0.25*ROAD_WIDTH
+        }
+
+      ];
+
+
+
+      for(let possiblePosition of cars_possible_startingPositions){
+
+        if(this.movingDirectionAxis === possiblePosition.movingDirectionAxis){
+
+          carSpawnPosition.x = possiblePosition.x;
+          carSpawnPosition.y = possiblePosition.y;
+
+        }
+
+      }
+
+      this.origin_x_Coord = carSpawnPosition.x;
+      this.origin_y_Coord = carSpawnPosition.y;
+    
+  }
+  
+  insideIntersectionArea(){
+    
+    
+    switch(this.movingDirectionAxis){
+        
+      case '+y':
+        
+        
+        return this.origin_y_Coord >= this.intersectionAreaDetails[0].axisPoint;
+   
+        
+      case '-y':
+        
+        return this.origin_y_Coord <= this.intersectionAreaDetails[2].axisPoint;
+        
+        
+      case '-x':
+        
+        return this.origin_x_Coord <= this.intersectionAreaDetails[1].axisPoint;
+           
+       
+      case '+x':
+        
+        return this.origin_x_Coord >= this.intersectionAreaDetails[3].axisPoint;
+        
+        
+    }
     
   }
   
@@ -194,7 +307,7 @@ class Car {
   }
   
   
-  accelerate(targetVeloctiy){
+  accelerate(){
     
     switch(this.movingDirectionAxis){
         
@@ -206,7 +319,7 @@ class Car {
           
         } else {
                       
-          this.origin_x_Coord += targetVeloctiy + this.acceleration;
+          this.origin_x_Coord += this.acceleration;
           
         }
         
@@ -220,7 +333,7 @@ class Car {
           
         } else {
                       
-          this.origin_x_Coord -= targetVeloctiy + this.acceleration;
+          this.origin_x_Coord -= this.acceleration;
           
         }
         
@@ -234,7 +347,7 @@ class Car {
           
         } else {
           
-          this.origin_y_Coord += targetVeloctiy + this.acceleration;
+          this.origin_y_Coord += this.acceleration;
           
         }
         
@@ -248,7 +361,7 @@ class Car {
           
         } else {
           
-          this.origin_y_Coord -= targetVeloctiy + this.acceleration;
+          this.origin_y_Coord -= this.acceleration;
           
         }
         
